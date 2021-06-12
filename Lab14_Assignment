@@ -1,0 +1,184 @@
+Import java.io.Serializable;
+
+Public class ATM_Account implements Serializable{
+    
+    Private String accountNumber;
+    Private int balance;
+    
+    Public ATM_Account(String accountNumber, int balance) {
+        This.accountNumber = accountNumber;
+        This.balance = balance;
+    }
+    
+    Public String getAccountNumber() {
+        Return accountNumber;
+    }
+    
+    Public void setAccountNumber(String accountNumber) {
+        This.accountNumber = accountNumber;
+    }
+    
+    Public int getBalance() {
+        Return balance;
+    }
+    
+    Public void setBalance(int balance) {
+        This.balance = balance;
+    }
+    
+    @Override
+    Public String toString() {
+        Return “ATM_Account{“ + “accountNumber=’” + accountNumber + ‘\’’ + “, balance=” + balance + ‘}’ + “\n”;
+    }
+}
+Import java.io.*;
+
+Public class ATM_Account_main {
+    Private static ATM_Account[] atmAccountArray = new ATM_Account[10];
+    Private static BufferedWriter writer;
+    Private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    Public void balanceInquiry (String accountNumber){
+        Boolean isFound=false;
+        For (int i=0;i<10;i++){
+            If (atmAccountArray[i].getAccountNumber().equalsIgnoreCase(accountNumber)){
+                isFound=true;
+                System.out.println(“The Account Balance is: “+ atmAccountArray[i].getBalance());
+                Break;
+            }
+        }
+        If(!isFound)
+            System.out.println(“No such Account Number Found”);
+    }
+    
+    Public void withdraw(String accountNumber) throws IOException{
+        Boolean isFound=false;
+        Int withdrawAmount;
+        For (int i=0;i<10;i++) {
+            If (atmAccountArray[i].getAccountNumber().equalsIgnoreCase(accountNumber)) {
+                isFound = true;
+                System.out.println(“Please enter Withdrawl Amount”);
+                withdrawAmount = Integer.parseInt(br.readLine());
+                if (atmAccountArray[i].getBalance() >= withdrawAmount)
+                    atmAccountArray[i].setBalance(atmAccountArray[i].getBalance() – withdrawAmount);
+                else
+                    System.out.println(“Sorry!!, not enough balance to withdraw from your Account”);
+                Break;
+            }
+        }
+        If(!isFound)
+            System.out.println(“No such Account Number Found”);
+    }
+    
+    Public void deposit(String accountNumber) throws Exception{
+        Boolean isFound=false;
+        Int depositAmount;
+        For (int i=0;i<10;i++) {
+            If (atmAccountArray[i].getAccountNumber().equalsIgnoreCase(accountNumber)) {
+                isFound = true;
+                System.out.println(“Please enter Deposit Amount”);
+                depositAmount = Integer.parseInt(br.readLine());
+                if (depositAmount < 0)
+                    System.out.println(“Sorry!! You cannot enter Negative Amount to Deposit”);
+                Else
+                    atmAccountArray[i].setBalance(atmAccountArray[i].getBalance() + depositAmount);
+                
+                break;
+            }
+        }
+        If(!isFound)
+            System.out.println(“No such Account Number Found”);
+    }
+    
+    Public void transfer(String accountNumberFrom, String accountNumberTo) throws Exception{
+        Int fromPosition=-1, toPosition=-1;
+        Int transferAmount;
+        For (int i=0;i<10;i++){
+            If (atmAccountArray[i].getAccountNumber().equalsIgnoreCase(accountNumberFrom)) {
+                fromPosition = I;
+                break;
+            }
+        }
+        For (int i=0;i<10;i++){
+            If (atmAccountArray[i].getAccountNumber().equalsIgnoreCase(accountNumberTo)) {
+                toPosition = I;
+                break;
+            }
+        }
+        
+        If (fromPosition !=-1 && toPosition !=-1){
+            System.out.println(“Please enter Amount to transfer”);
+            transferAmount = Integer.parseInt(br.readLine());
+            if (atmAccountArray[fromPosition].getBalance() >= transferAmount) {
+                atmAccountArray[fromPosition].setBalance(atmAccountArray[fromPosition].getBalance() – transferAmount);
+                atmAccountArray[toPosition].setBalance(atmAccountArray[toPosition].getBalance() + transferAmount);
+            }else
+                System.out.println(“Sorry!! Insufficient funds to transfer”);
+        }
+    }
+    
+    Public static void main(String[] args) throws Exception{
+        
+        ATM_Account account1 = new ATM_Account(“123456789”, 100);
+        ATM_Account account2 = new ATM_Account(“1122334455”, 100);
+        ATM_Account account3 = new ATM_Account(“987654321”, 100);
+        ATM_Account account4 = new ATM_Account(“998877665544”, 100);
+        ATM_Account account5 = new ATM_Account(“9876512344”, 100);
+        ATM_Account account6 = new ATM_Account(“1928374650”, 100);
+        ATM_Account account7 = new ATM_Account(“123987560”, 100);
+        ATM_Account account8 = new ATM_Account(“23456789011”, 100);
+        ATM_Account account9 = new ATM_Account(“098765432100”, 100);
+        ATM_Account account10 = new ATM_Account(“99876512340”, 100);
+        atmAccountArray[0] = account1;
+        atmAccountArray[1] = account2;
+        atmAccountArray[2] = account3;
+        atmAccountArray[3] = account4;
+        atmAccountArray[4] = account5;
+        atmAccountArray[5] = account6;
+        atmAccountArray[6] = account7;
+        atmAccountArray[7] = account8;
+        atmAccountArray[8] = account9;
+        atmAccountArray[9] = account10;
+        
+        // Write all 10 objects into a file
+        Writer = new BufferedWriter(new FileWriter(“F:\\CHEGG\\JAVA_PROGRAMS\\src\\Account.txt”, false));
+        Writer.write(“The Initial Accounts before transaction are:-- \n”);
+        Writer.write(account1.toString());
+        Writer.write(account2.toString());
+        Writer.write(account3.toString());
+        Writer.write(account4.toString());
+        Writer.write(account5.toString());
+        Writer.write(account6.toString());
+        Writer.write(account7.toString());
+        Writer.write(account8.toString());
+        Writer.write(account9.toString());
+        Writer.write(account10.toString());
+    
+        ATM_Account_main obj1 = new ATM_Account_main();
+        Obj1.balanceInquiry(“123456789”);
+        Obj1.withdraw(“123456789”);
+        Obj1.deposit(“123456789”);
+        Obj1.transfer(“123456789”,”99876512340”);
+        
+        Obj1.deposit(“1122334455”);
+        Obj1.deposit(“987654321”);
+        Obj1.deposit(“987654321123”);
+        Obj1.deposit(“123987560”);
+        Obj1.deposit(“99876512340”);
+        Obj1.transfer(“99876512340”,”987654321”);
+        Obj1.transfer(“99876512340”,”098765432100”);
+        
+        Writer.write(“The Final Accounts Accounts after transaction are:-- \n”);
+        Writer.write(account1.toString());
+        Writer.write(account2.toString());
+        Writer.write(account3.toString());
+        Writer.write(account4.toString());
+        Writer.write(account5.toString());
+        Writer.write(account6.toString());
+        Writer.write(account7.toString());
+        Writer.write(account8.toString());
+        Writer.write(account9.toString());
+        Writer.write(account10.toString());
+        Writer.close();
+    }
+}
